@@ -5,8 +5,8 @@ export class LoaderWindow extends Phaser.Scene {
   preload() {
     this.load.setBaseURL('https://midesweb.github.io/juego-de-multiplicar/');
     // this window
-    this.load.image('backgroundIntro', '../../images/backgrounds/intro.png');
-    this.load.spritesheet('button', '../../images/buttons/comenzar.png', { frameWidth: 190, frameHeight: 49 });
+    this.load.image('backgroundIntro', 'images/backgrounds/intro.png');
+    this.load.spritesheet('button', 'images/buttons/comenzar.png', { frameWidth: 190, frameHeight: 49 });
 
     //platform window
     this.load.image('backgroundPlatform', 'images/backgrounds/bg_1.png');
@@ -25,7 +25,7 @@ export class LoaderWindow extends Phaser.Scene {
     this.load.audio('selectaudio', 'sound/select.ogg');
 
     // game over y pro
-    this.load.image('backgroundgameover', '../../images/backgrounds/bg-stars2.png');
+    this.load.image('backgroundgameover', 'images/backgrounds/bg-stars2.png');
   }
   
   create() {

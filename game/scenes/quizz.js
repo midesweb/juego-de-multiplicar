@@ -2,6 +2,8 @@ import { MultiplicationGenerator } from '../multiplication-generator.js';
 import { Option } from '../components/option.js';
 import { Time } from '../components/time.js';
 import { DisplayHits } from '../components/display-hits.js';
+//import { DisplayFeedback } from '../components/display-feedback.js';
+import { QuizzSummary } from '../components/quizz-summary.js';
 
 export class QuizzWindow extends Phaser.Scene {
   constructor() {
@@ -14,6 +16,7 @@ export class QuizzWindow extends Phaser.Scene {
 
   preload() {
     this.load.image('backgroundQuizz', 'images/backgrounds/bg_quizz.png');
+    this.load.image('backgroundStars', 'images/backgrounds/bg-stars.png');
     this.load.spritesheet('dude_static',
       'images/dude/dude-static.png',
       { frameWidth: 108, frameHeight: 160 }
@@ -25,11 +28,7 @@ export class QuizzWindow extends Phaser.Scene {
     this.load.image('alien_ship', 'images/alien/ship.png');
     this.load.image('baloon', 'images/baloon.png');
     this.level = this.registry.get('level');
-    if(this.level == 1) {
-      this.multiplicationGenerator = new MultiplicationGenerator(10);
-    } else {
-      this.multiplicationGenerator = new MultiplicationGenerator(this.level);
-    }
+    this.multiplicationGenerator = new MultiplicationGenerator();
     this.load.image('laser0', 'images/alien/laserBlue3.png');
     this.load.image('laser1', 'images/alien/laserPink3.png');
     this.load.image('laser2', 'images/alien/laserYellow3.png');
@@ -48,13 +47,18 @@ export class QuizzWindow extends Phaser.Scene {
     for(let i = 0; i < 3; i++) {
       this.options[i] = new Option(this, i, '');
     }
-    this.time = new Time(this);
     this.displayHits = new DisplayHits(this, 0, 1);
+    this.summary = new QuizzSummary(this);
+    this.timer = new Time(this);
+    
+    
+    
     this.setupQuestion();
 
     this.scene.get('platform').events.on('quizz-start', () => {
-      this.time.restart();
+      this.timer.reset();
       this.level = this.registry.get('level');
+      //console.log('aki el nivel es', this.level);
       this.currentQuestion = 0;
       this.hits = 0;
       this.stoped = false;
@@ -86,47 +90,81 @@ export class QuizzWindow extends Phaser.Scene {
   }
 
   optionChoose(index) {
-    // console.log('han seleccionado ' , index);
+    this.timer.stop();
+    this.hideOptions();
+    let delay = 3000;
+    //console.log('han seleccionado ' , index);
     if (this.currentOperation.result == this.currentOperation.alternativeAnswers[index]) {
       this.hits++;
+      this.displayHits.refresh(this.hits, this.currentQuestion);
+      this.summary.showSingle(this.currentQuestion, this.currentOperation, true);
+    } else {
+      this.summary.showSingle(this.currentQuestion, this.currentOperation, false);
+      delay = 8000;
     }
-    this.setupQuestion();
+    setTimeout( () => {
+      this.setupQuestion();
+    }, delay)
 
   }
 
   timeFinished() {
     // console.log('el tiempo ha acabado');
-    this.time.showFinish();
+    this.timer.showFinish();
     this.endScene();
   }
 
   setupQuestion() {
+    this.summary.hide();
+    this.showOptions();
     this.currentQuestion++;
     if(this.currentQuestion <= this.numberQuestions) {
       this.displayHits.refresh(this.hits, this.currentQuestion);
-      this.currentOperation = this.multiplicationGenerator.createQuestion();
+      this.timer.start();
+      if(this.level == 1) {
+        this.currentOperation = this.multiplicationGenerator.createQuestion(10);
+      } else {
+        this.currentOperation = this.multiplicationGenerator.createQuestion(this.level);
+      }
       this.operationDisplay.setText(this.currentOperation.operationString);
       for (let i = 0; i < 3; i++) {
         this.options[i].setText(this.currentOperation.alternativeAnswers[i]);
       }
     } else {
       this.displayHits.refresh(this.hits, this.currentQuestion - 1);
+      this.summary.showSummary();
+      let delay = 5000;
+      if(this.hits < 3) {
+        delay = 10000;
+      }
       // console.log('has llegado al final de las preguntas');
-      this.endScene();
+      setTimeout( () => {
+        this.endScene();
+      }, delay);
     }
   }
 
   endScene() {
-    console.log('endScene!!');
     this.registry.set('level', this.registry.get('level') + 1);
+    console.log('el nivel actual ', this.registry.get('level'));
     this.registry.set('hits', this.hits);
     this.scene.switch('platform');
     
-    this.time.stop();
+    this.timer.stop();
     //this.scene.destroy();
-    console.log('endScene2!!');
     this.stoped = true;
     // level scene
     this.events.emit('quizz-end' /*…*/);
+  }
+
+  hideOptions() {
+    for (let i in this.options) {
+      this.options[i].hide();
+    }
+  }
+  showOptions() {
+    for (let i in this.options) {
+      this.options[i].show();
+    }
   }
 }

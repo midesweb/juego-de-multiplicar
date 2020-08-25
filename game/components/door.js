@@ -66,9 +66,15 @@ export class Door {
     console.log('entrand...');
     this.moveDoor();
     // Cambio la escena dejando la presente escena "pausada"
-    this.componentScene.scene.switch('quizz');
-    this.componentScene.events.emit('quizz-start' /*…*/);
-    this.componentScene.playerStop();
+    let level = this.componentScene.registry.get('level');
+    if(level == 10) {
+      this.componentScene.scene.start('pro');
+      this.componentScene.playerStop();
+    } else {
+      this.componentScene.scene.switch('quizz');
+      this.componentScene.events.emit('quizz-start' /*…*/);
+      this.componentScene.playerStop();
+    }
   }
 
   moveDoor() {

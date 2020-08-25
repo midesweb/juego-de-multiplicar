@@ -31,4 +31,11 @@ export class Option {
     this.text.setText(text);
   }
 
+  hide() {
+    this.option.visible = false;
+  }
+
+  show() {
+    this.option.visible = true;
+  }
 }

@@ -9,9 +9,8 @@ export class MultiplicationGenerator {
     this.operator1 = operator;
   }
 
-  createQuestion() {
-    // Creo un array para llevar la cuenta de los valores
-    this.valueAppearances = [];
+  createQuestion(operator) {
+    this.operator1 = operator;
     do {
       var random = this.random(2, 9);
       console.log('intento con ', random);
@@ -44,10 +43,10 @@ export class MultiplicationGenerator {
   }
 
   createOperationString(operator2) {
-    return `${this.operator1} X ${operator2}`;
+    return `${this.operator1} x ${operator2}`;
   } 
   createInverseOperationString(operator2) {
-    return `${operator2} X ${this.operator1}`;
+    return `${operator2} x ${this.operator1}`;
   } 
 
   result(operator2) {

@@ -20,6 +20,9 @@ export class LoaderWindow extends Phaser.Scene {
       'images/dude.png',
       { frameWidth: 32, frameHeight: 48 }
     );
+
+    // game over y pro
+    this.load.image('backgroundgameover', '../../images/backgrounds/bg-stars2.png');
   }
   
   create() {

@@ -29,7 +29,7 @@ export class Stars {
   }
 
   createStars(number = 3) {
-    console.log('me han pedido colocar ', number , 'estrellas y tengo ', freePositions.length , ' free positions');
+    //console.log('me han pedido colocar ', number , 'estrellas y tengo ', freePositions.length , ' free positions');
     freePositions = shuffle(freePositions);
 
     for(let i = 0; i < number; i++) {
@@ -37,16 +37,16 @@ export class Stars {
         break;
       }
       let item = freePositions.pop();
-      console.log('cloca estrella ' , item);
+      //console.log('cloca estrella ' , item);
       this.stars.create(item.x, item.y, 'star');
     }
     
   }
 
   collectStar(player, star) {
-    console.log('colectada', star);
+    //console.log('colectada', star);
     freePositions.push(getStarElement(star.x));
-    console.log(freePositions);
+    //console.log(freePositions);
     star.disableBody(true, true);
     this.relatedScene.score += 10;
     this.relatedScene.refreshScore();

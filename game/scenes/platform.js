@@ -6,24 +6,17 @@ export class PlatformWindow extends Phaser.Scene {
     super({ key: 'platform' });
     this.score = 0;
     this.level = 1;
-
-    
   }
 
   preload() {
+    this.registerListeners(); 
     this.registry.set('level', 1);
-    this.scene.get('quizz').events.on('quizz-end', () => {
-      let hits = this.registry.get('hits');
-      this.renew(hits);
-      console.log('en el evento quizz.end');
-    });
   }
 
   create() {
-    console.log('create');
 
     this.add.image(410, 250, 'backgroundPlatform');
-    this.scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
+    this.scoreText = this.add.text(16, 16, 'Puntos: 0', { fontSize: '32px', fill: '#000' });
     this.createSpikes();
     this.createPlatforms();
     this.createPlayer();
@@ -124,14 +117,12 @@ export class PlatformWindow extends Phaser.Scene {
 
   update() {
     if (this.cursors.left.isDown) {
-      console.log('left is down');
 
       this.player.setVelocityX(-160);
 
       this.player.anims.play('left', true);
     }
     else if (this.cursors.right.isDown) {
-      console.log('right is down');
       this.player.setVelocityX(160);
 
       this.player.anims.play('right', true);
@@ -165,12 +156,11 @@ export class PlatformWindow extends Phaser.Scene {
 
   hitBomb(player, bomb) {
     this.physics.pause();
-
     player.setTint(0xff0000);
-
     player.anims.play('turn');
-
     this.gameOver = true;
+    this.scene.start('gameover');
+    this.registry.set('score', this.score);
   }
 
   renew(hits) {
@@ -184,10 +174,10 @@ export class PlatformWindow extends Phaser.Scene {
   }
 
   playerStop() {
-    console.log('paro el player ya no vale');
     this.input.keyboard.clearCaptures();
     this.cursors.right.isDown = false;
     this.cursors.left.isDown = false;
+    this.cursors.up.isDown = false;
   }
 
   refreshScore() {
@@ -201,5 +191,19 @@ export class PlatformWindow extends Phaser.Scene {
     bomb.setBounce(1);
     bomb.setCollideWorldBounds(true);
     bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
+  }
+
+  registerListeners() {
+    if(! this.hasRegisteredListeners) {
+      this.scene.get('quizz').events.on('quizz-end', () => {
+        let hits = this.registry.get('hits');
+        this.renew(hits);
+      });
+      this.scene.get('gameover').events.on('game-restart', () => {
+        this.score = 0;
+        this.level = 1;
+      });
+      this.hasRegisteredListeners = true;
+    }
   }
 }

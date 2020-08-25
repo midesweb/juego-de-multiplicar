@@ -29,6 +29,7 @@ export class QuizzWindow extends Phaser.Scene {
     this.load.image('baloon', 'images/baloon.png');
     this.level = this.registry.get('level');
     this.multiplicationGenerator = new MultiplicationGenerator();
+
     this.load.image('laser0', 'images/alien/laserBlue3.png');
     this.load.image('laser1', 'images/alien/laserPink3.png');
     this.load.image('laser2', 'images/alien/laserYellow3.png');
@@ -118,9 +119,9 @@ export class QuizzWindow extends Phaser.Scene {
 
   setupQuestion() {
     this.summary.hide();
-    this.showOptions();
     this.currentQuestion++;
     if(this.currentQuestion <= this.numberQuestions) {
+      this.showOptions();
       this.displayHits.refresh(this.hits, this.currentQuestion);
       this.timer.start();
       if(this.level == 1) {

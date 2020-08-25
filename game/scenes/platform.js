@@ -1,5 +1,6 @@
 import { Door } from '../components/door.js';
 import { Stars } from '../components/stars.js';
+import { MultiplicationGenerator } from '../multiplication-generator.js';
 
 export class PlatformWindow extends Phaser.Scene {
   constructor() {
@@ -205,6 +206,8 @@ export class PlatformWindow extends Phaser.Scene {
       this.scene.get('gameover').events.on('game-restart', () => {
         this.score = 0;
         this.level = 1;
+        this.registry.set('level', 1);
+        MultiplicationGenerator.alreadyRealiced = [];
       });
       this.hasRegisteredListeners = true;
     }

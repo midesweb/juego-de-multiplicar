@@ -63,17 +63,22 @@ export class MultiplicationGenerator {
 
   wrongWithAddtion(operator2) {
     let diferencial;
-    if(operator2 <= 3) {
-      diferencial = this.random(1, 3);
-    } else {
-      let val = this.random(1, 10);
-      if(val > 5) {
+    let operator = this.minimum(this.operator1, operator2);
+    console.log('el minimo es ', operator);
+    switch (operator) {
+      case 2:
+        diferencial = 1;
+        break;
+      case 3:
+        diferencial = this.random(1, 2);
+        break;
+      default:
         diferencial = this.random(1, 3);
-      } else {
-        diferencial = this.random(-3, -1);
-      }
     }
-    return this.result(operator2) + diferencial;
+    if(this.randomBoolean) {
+      return this.result(operator2) + diferencial;
+    }
+    return this.result(operator2) - diferencial;  
   }
 
   wrongWithMultiplication(operator2) {
@@ -86,5 +91,20 @@ export class MultiplicationGenerator {
     } else {
       return this.result(operator2 - 1);
     }
+  }
+
+  minimum(val1, val2) {
+    if(val1 <= val2) {
+      return val1;
+    }
+    return val2;
+  }
+
+  randomBoolean() {
+    let val = this.random(1, 10);
+    if(val > 5) {
+      return true;
+    }
+    return false;
   }
 }

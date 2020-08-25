@@ -26,6 +26,8 @@ export class PlatformWindow extends Phaser.Scene {
     this.door = new Door(this);
     // colisión de los pinchos con el personaje
     this.physics.add.collider(this.player, this.spikes, this.hitBomb, null, this);
+
+    this.jumpAudio = this.sound.add('jumpaudio');
   }
 
   createPlatforms() {
@@ -135,6 +137,7 @@ export class PlatformWindow extends Phaser.Scene {
 
     if (this.cursors.up.isDown && this.player.body.touching.down) {
       this.player.setVelocityY(-330);
+      this.jumpAudio.play();
     }
   }
 

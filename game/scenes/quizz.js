@@ -51,7 +51,8 @@ export class QuizzWindow extends Phaser.Scene {
     this.summary = new QuizzSummary(this);
     this.timer = new Time(this);
     
-    
+    this.selectAudio = this.sound.add('selectaudio');
+
     
     this.setupQuestion();
 
@@ -90,6 +91,7 @@ export class QuizzWindow extends Phaser.Scene {
   }
 
   optionChoose(index) {
+    this.selectAudio.play()
     this.timer.stop();
     this.hideOptions();
     let delay = 3000;

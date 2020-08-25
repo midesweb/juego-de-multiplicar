@@ -20,6 +20,8 @@ export class LoaderWindow extends Phaser.Scene {
       'images/dude.png',
       { frameWidth: 32, frameHeight: 48 }
     );
+    this.load.audio('jumpaudio', 'sound/jump1.ogg');
+    this.load.audio('selectaudio', 'sound/select.ogg');
 
     // game over y pro
     this.load.image('backgroundgameover', '../../images/backgrounds/bg-stars2.png');

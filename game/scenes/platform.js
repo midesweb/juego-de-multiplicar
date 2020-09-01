@@ -32,6 +32,9 @@ export class PlatformWindow extends Phaser.Scene {
     this.physics.add.collider(this.player, this.spikes, this.hitBomb, null, this);
 
     this.jumpAudio = this.sound.add('jumpaudio');
+    this.gameOverSample = this.sound.add('gameoveraudio');
+    this.startSample = this.sound.add('startaudio');
+    this.startSample.play();
   }
 
   createPlatforms() {
@@ -176,6 +179,10 @@ export class PlatformWindow extends Phaser.Scene {
     let newBombs = 3 - hits;
     this.errors += newBombs;
     this.registry.set('errors', this.errors);
+    if(this.errors >= 5) {
+      this.gameOverSample.play();
+      this.scene.start('gameover');
+    }
     for(let i = 0; i < newBombs; i++) {
       this.createBomb();
     }

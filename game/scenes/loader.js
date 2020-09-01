@@ -26,6 +26,8 @@ export class LoaderWindow extends Phaser.Scene {
     );
     this.load.audio('jumpaudio', 'sound/jump1.ogg');
     this.load.audio('selectaudio', 'sound/select.ogg');
+    this.load.audio('gameoveraudio', 'sound/demasiados-fallos.mp3');
+    this.load.audio('startaudio', 'sound/demuestra-pro.mp3');
 
     // game over y pro
     this.load.image('backgroundgameover', 'images/backgrounds/bg-stars2.png');

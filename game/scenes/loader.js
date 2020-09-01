@@ -1,9 +1,12 @@
+console.log('loader module');
+
 export class LoaderWindow extends Phaser.Scene {
   constructor() {
     super({ key: 'LoaderWindow' });
+    console.log('loader constructor');
   }
   preload() {
-    this.load.setBaseURL('https://midesweb.github.io/juego-de-multiplicar/');
+    //this.load.setBaseURL('https://midesweb.github.io/juego-de-multiplicar/');
     // this window
     this.load.image('backgroundIntro', 'images/backgrounds/intro.png');
     this.load.spritesheet('button', 'images/buttons/comenzar.png', { frameWidth: 190, frameHeight: 49 });

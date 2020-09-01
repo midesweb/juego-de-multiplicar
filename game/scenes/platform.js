@@ -7,6 +7,8 @@ export class PlatformWindow extends Phaser.Scene {
     super({ key: 'platform' });
     this.score = 0;
     this.level = 1;
+    this.errors = 0;
+    this.livesUsed = 0;
   }
 
   preload() {
@@ -25,6 +27,7 @@ export class PlatformWindow extends Phaser.Scene {
     this.stars = new Stars(this);
     this.createBombs();
     this.door = new Door(this);
+    
     // colisión de los pinchos con el personaje
     this.physics.add.collider(this.player, this.spikes, this.hitBomb, null, this);
 
@@ -159,16 +162,20 @@ export class PlatformWindow extends Phaser.Scene {
   }
 
   hitBomb(player, bomb) {
-    this.physics.pause();
-    player.setTint(0xff0000);
-    player.anims.play('turn');
-    this.gameOver = true;
-    this.scene.start('gameover');
-    this.registry.set('score', this.score);
+    this.restorePlayer();
+    
+    //this.physics.pause();
+    //player.anims.play('turn');
+    //player.setTint(0xff0000);
+    // this.gameOver = true;
+    // this.scene.start('gameover');
+    // this.registry.set('score', this.score);
   }
 
   renew(hits) {
     let newBombs = 3 - hits;
+    this.errors += newBombs;
+    this.registry.set('errors', this.errors);
     for(let i = 0; i < newBombs; i++) {
       this.createBomb();
     }
@@ -186,6 +193,7 @@ export class PlatformWindow extends Phaser.Scene {
 
   refreshScore() {
     this.scoreText.setText('Puntos: ' + this.score);
+    this.registry.set('score', this.score);
   }
 
   createBomb() {
@@ -211,5 +219,12 @@ export class PlatformWindow extends Phaser.Scene {
       });
       this.hasRegisteredListeners = true;
     }
+  }
+
+  restorePlayer() {
+    this.livesUsed++;
+    this.registry.set('livesused', this.livesUsed);
+    this.player.x = 300;
+    this.player.y = 50;
   }
 }

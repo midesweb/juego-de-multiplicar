@@ -10,18 +10,23 @@ export class ProWindow extends Phaser.Scene {
 
   create() {
     this.add.image(410, 250, 'backgroundgameover');
-    this.proImage = this.add.image(400, 90, 'pro');
+    this.proImage = this.add.image(400, 70, 'pro');
 
-    this.scoreText = this.add.text(35, 160, `Enhorabuena!! Demostraste ser el auténtico PRO de las mates!`, { fontSize: '26px', fill: '#fff', fontFamily: 'helvetica, verdana, arial' });
+    this.scoreText = this.add.text(35, 140, `Enhorabuena!! Demostraste ser el auténtico PRO de las mates!`, { fontSize: '26px', fill: '#fff', fontFamily: 'helvetica, verdana, arial' });
 
     this.score = this.registry.get('score');
-    this.scoreText = this.add.text(70, 220, `Has conseguido ${this.score} puntos`, { fontSize: '42px', fill: '#fff' });
+    this.scoreText = this.add.text(70, 200, `Has conseguido ${this.score} puntos`, { fontSize: '36px', fill: '#fff' });
 
     this.level = this.registry.get('level');
-    this.levelText = this.add.text(70, 290, `Has llegado al nivel ${this.level}`, { fontSize: '42px', fill: '#fff' });
+    this.levelText = this.add.text(70, 250, `Has llegado al nivel ${this.level}`, { fontSize: '36px', fill: '#fff' });
 
+    this.livesUsed = this.registry.get('livesused');
+    this.livesText = this.add.text(70, 300, `Has usado ${this.livesUsed} vidas`, { fontSize: '36px', fill: '#fff' });
 
-    this.startButton = this.add.sprite(400, 430, 'button').setInteractive();
+    this.errors = this.registry.get('errors');
+    this.errorsText = this.add.text(70, 350, `Te has equivocado ${this.errors} veces`, { fontSize: '36px', fill: '#fff' });
+
+    this.startButton = this.add.sprite(420, 430, 'button').setInteractive();
 
     this.startButton.on('pointerover', () => {
       this.startButton.setFrame(1);

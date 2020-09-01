@@ -225,6 +225,6 @@ export class PlatformWindow extends Phaser.Scene {
     this.livesUsed++;
     this.registry.set('livesused', this.livesUsed);
     this.player.x = 300;
-    this.player.y = 50;
+    this.player.y = 300;
   }
 }

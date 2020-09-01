@@ -221,6 +221,10 @@ export class PlatformWindow extends Phaser.Scene {
       this.scene.get('gameover').events.on('game-restart', () => {
         this.score = 0;
         this.level = 1;
+        this.errors = 0;
+        this.livesUsed = 0;
+        this.registry.set('errors', 0);
+        this.registry.set('livesused', 0);
         this.registry.set('level', 1);
         MultiplicationGenerator.alreadyRealiced = [];
       });
